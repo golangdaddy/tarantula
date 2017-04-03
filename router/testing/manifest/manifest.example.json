@@ -1,0 +1,26 @@
+{
+    "host": "https://example.com",
+    "spec": "https://example.com/_.json",
+    "token":  "eyJhbGciOiJSUzI1NiIsImtpZCI6ImNhNDYwYWY5NTFhY2NjMmRlNDc0NTAwZjc5NDk4OWE0M2RlNzMwNjMifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vd2FsbGV0LTE4MDQxMiIsIm5hbWUiOiJCbG9rIEh1YiIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vLVhkVUlxZE1rQ1dBL0FBQUFBQUFBQUFJL0FBQUFBQUFBQUFBLzQyNTJyc2NidjVNL3Bob3RvLmpwZyIsImF1ZCI6IndhbGxldC0xODA0MTIiLCJhdXRoX3RpbWUiOjE1MTc1MDE4NDcsInVzZXJfaWQiOiJpMFhTSFFHVnVIUHkxZTV4Tm5hd2NrNVRlNDgzIiwic3ViIjoiaTBYU0hRR1Z1SFB5MWU1eE5uYXdjazVUZTQ4MyIsImlhdCI6MTUxNzUwMTg0NywiZXhwIjoxNTE3NTA1NDQ3LCJlbWFpbCI6ImJsb2todWJpb0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExNzAyNjc4NTQyMTcxMzIyMTg2OSJdLCJlbWFpbCI6WyJibG9raHViaW9AZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoiZ29vZ2xlLmNvbSJ9fQ.IiwBW9FjGGgSHeZhjRGW3Ub7Uanvx2Bc7YQvgEd8cMuFEqtlMLR6ugYCP3cb7qhh19PN4sh-8o1c7qHvtDwENaYprrRL7vKN0IX8g2MC5x1nuSQADqw2A6EE7qnNEoaHofkjEdm7PWxWIVIzFOW8UzLV3WOUlEEN3mqBqm2Pd_B3BzKWyhYmEvmXwf1fIX5sveh5SpQbtsWiVQDw9Kc6YN4Kt5u68peN_OjvwsB1ZKXId38AgkY0p3QwYXmVj725r-7Vxqit32C8R9MIdN_n3o6EpQKYRA-WxjHsHc6O8jyy1DmpMf73w51evS5Yae1Fru0YVJ-9HPOF7B7xP9p1-Q",
+    "label": "Full",
+    "variables":{
+        "network": "8ec4a831-949d-4475-be5b-0c17cc6c9756",
+        "project": null,
+        "projectName": "my project"
+    },
+    "endpoints":[
+        {
+            "method": "POST",
+            "endpoint": "/api/new/network/:network/project",
+            "pathArgs":{
+                "network": "network"
+            },
+            "bodyArgs":{
+                "title": "projectName"
+            },
+            "use": {
+                "uid": "project"
+            }
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+Add	/home/ben/gocode/src/github.com/golangdaddy/girlfriend/markup/element.go	/^func (ele *ELEMENT) Add(childs ...*ELEMENT) *ELEMENT {$/;"	f	language:Go
+Attr	/home/ben/gocode/src/github.com/golangdaddy/girlfriend/markup/element.go	/^func (ele *ELEMENT) Attr(args ...string) *ELEMENT {$/;"	f	language:Go
+AttrDirs	/home/ben/gocode/src/github.com/golangdaddy/girlfriend/markup/element.go	/^func (ele *ELEMENT) AttrDirs(directiveNames ...string) *ELEMENT {$/;"	f	language:Go
+Delims	/home/ben/gocode/src/github.com/golangdaddy/girlfriend/markup/element.go	/^func Delims(key string) string { return DELIM_L + " ." + key + " " + DELIM_R }$/;"	f	language:Go
+DELIM_L	/home/ben/gocode/src/github.com/golangdaddy/girlfriend/markup/element.go	/^const 	($/;"	c	language:Go
+DELIM_R	/home/ben/gocode/src/github.com/golangdaddy/girlfriend/markup/element.go	/^		DELIM_L = "<!!"$/;"	c	language:Go
+Ele	/home/ben/gocode/src/github.com/golangdaddy/girlfriend/markup/element.go	/^func Ele(tagType string) *ELEMENT {$/;"	f	language:Go
+ELEMENT	/home/ben/gocode/src/github.com/golangdaddy/girlfriend/markup/element.go	/^type ELEMENT struct {$/;"	t	language:Go
+g	/home/ben/gocode/src/github.com/golangdaddy/girlfriend/markup/element.go	/^package g$/;"	p	language:Go
+GetData	/home/ben/gocode/src/github.com/golangdaddy/girlfriend/markup/element.go	/^func (ele *ELEMENT) GetData() interface{} {$/;"	f	language:Go
+Inner	/home/ben/gocode/src/github.com/golangdaddy/girlfriend/markup/element.go	/^func (ele *ELEMENT) Inner(s string) *ELEMENT {$/;"	f	language:Go
+Interpolate	/home/ben/gocode/src/github.com/golangdaddy/girlfriend/markup/element.go	/^func Interpolate(expression string) string { return "{{ " + expression + " }}" }$/;"	f	language:Go
+New	/home/ben/gocode/src/github.com/golangdaddy/girlfriend/markup/element.go	/^func (ele *ELEMENT) New() *ELEMENT {$/;"	f	language:Go
+RAttr	/home/ben/gocode/src/github.com/golangdaddy/girlfriend/markup/element.go	/^func (ele *ELEMENT) RAttr(key, value string) *ELEMENT {$/;"	f	language:Go
+Renderer	/home/ben/gocode/src/github.com/golangdaddy/girlfriend/markup/element.go	/^type Renderer interface{$/;"	t	language:Go
+Repeat	/home/ben/gocode/src/github.com/golangdaddy/girlfriend/markup/element.go	/^func (ele *ELEMENT) Repeat(limit int, keys ...string) *ELEMENT {$/;"	f	language:Go
+Repeater	/home/ben/gocode/src/github.com/golangdaddy/girlfriend/markup/element.go	/^type Repeater struct {$/;"	t	language:Go
+SetData	/home/ben/gocode/src/github.com/golangdaddy/girlfriend/markup/element.go	/^func (ele *ELEMENT) SetData(data interface{}) *ELEMENT {$/;"	f	language:Go
