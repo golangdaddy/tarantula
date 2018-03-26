@@ -249,7 +249,9 @@ func (node *Node) Next(req web.RequestInterface, pathSegment string) (*Node, *we
 
 	// execute any init module(s)
 
-	node.RunModule(req)
+	if status := node.RunModule(req); status != nil {
+		return nil, status
+	}
 
 	// check for child routes
 

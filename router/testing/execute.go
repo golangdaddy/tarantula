@@ -84,7 +84,7 @@ func (app *App) startExecution(endpoint *manifest.Endpoint) error {
 	)
 	if endpoint.Spec == nil {
 		fmt.Println(endpoint)
-		return errors.New("FAILED TO EXECUTE NIL SPEC")
+		return fmt.Errorf("FAILED TO EXECUTE NIL SPEC %s %s", endpoint.Method, endpoint.Endpoint)
 	}
 
 	obj, err := app.execute(endpoint.Spec)
