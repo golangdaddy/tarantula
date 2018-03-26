@@ -152,6 +152,9 @@ func (app *App) execute(spec *common.HandlerSpec) (interface{}, error) {
 
 		case "POST":
 
+			b, _ := json.Marshal(spec.MockPayload)
+			color.Yellow(string(b))
+
 			_, err = app.Post(app.Manifest.Host + spec.MockEndpoint, spec.MockPayload, dst, authHeader)
 
 		case "DELETE":
