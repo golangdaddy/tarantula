@@ -67,7 +67,7 @@ func (client *Client) Get(url string, dst interface{}, headers ...map[string]str
 
 func (client *Client) Post(url string, src, dst interface{}, headers ...map[string]string) ([]byte, error) {
 
-	httpRequest, err := sling.New().Get(url).BodyJSON(src).Request()
+	httpRequest, err := sling.New().Post(url).BodyJSON(src).Request()
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +96,7 @@ func (client *Client) Post(url string, src, dst interface{}, headers ...map[stri
 
 func (client *Client) Delete(url string, src interface{}, headers ...map[string]string) ([]byte, error) {
 
-	httpRequest, err := sling.New().Get(url).BodyJSON(src).Request()
+	httpRequest, err := sling.New().Delete(url).BodyJSON(src).Request()
 	if err != nil {
 		return nil, err
 	}
