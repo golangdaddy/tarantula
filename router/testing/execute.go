@@ -25,14 +25,20 @@ func Execute(m *manifest.Manifest, endpoints ...*manifest.Endpoint) error {
 
 	for _, e := range endpoints {
 
-		time.Sleep(time.Duration(int64(time.Millisecond) * 1000 * int64(e.DelayAfter)))
+		for x := 0; x < e.DelayBefore; x++ {
+			fmt.Println("DELAYING BEFORE...", x)
+			time.Sleep(time.Second)
+		}
 
 		err := app.startExecution(e)
 		if err != nil {
 			return err
 		}
 
-		time.Sleep(time.Duration(int64(time.Millisecond) * 1000 * int64(e.DelayAfter)))
+		for x := 0; x < e.DelayAfter; x++ {
+			fmt.Println("DELAYING AFTER...", x)
+			time.Sleep(time.Second)
+		}
 
 	}
 
