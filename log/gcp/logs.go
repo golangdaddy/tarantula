@@ -58,7 +58,7 @@ type LogClient struct {
 }
 
 // creates a new logger based on the input name
-func (lc *LogClient) NewLogger(logFuncNames ...string) *Logger {
+func (lc *LogClient) NewLogger(silent bool, logFuncNames ...string) *Logger {
 
 	var logFuncName string
 
@@ -84,6 +84,7 @@ func (lc *LogClient) NewLogger(logFuncNames ...string) *Logger {
 	if lc.loggers[logFuncName] == nil {
 		lc.loggers[logFuncName] = &Logger{
 			lc.ctx,
+			silent,
 			lc.client,
 			lc.client.Logger(logFuncName),
 		}
@@ -94,6 +95,7 @@ func (lc *LogClient) NewLogger(logFuncNames ...string) *Logger {
 
 type Logger struct {
 	ctx context.Context
+	silent bool
 	client *logging.Client
 	logger *logging.Logger
 }
@@ -118,21 +120,21 @@ func (lg *Logger) Log(msg interface{}, severity logging.Severity) {
 		Severity:     severity,
 	})
 
-	if err != nil {
-		color.Yellow("FAILED TO SEND LOG: " + err.Error())
+	// silent mode stops default logging to stdout
+	if !silent {
+		if err != nil {
+			color.Yellow("FAILED TO SEND LOG: " + err.Error())
+		}
+		if severity == logging.Error {
+			color.Red(payload)
+			return
+		}
+		if severity == logging.Debug {
+			color.Blue(payload)
+			return
+		}
+		color.Yellow(payload)
 	}
-
-	if severity == logging.Error {
-		color.Red(payload)
-		return
-	}
-
-	if severity == logging.Debug {
-		color.Blue(payload)
-		return
-	}
-
-	color.Yellow(payload)
 
 }
 
