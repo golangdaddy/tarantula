@@ -9,6 +9,7 @@ import	(
 		//
 		"github.com/golangdaddy/tarantula/log"
 		"github.com/golangdaddy/tarantula/router/common"
+		"github.com/golangdaddy/tarantula/router/common/openapi"
 		)
 
 type WildcardRouter struct {
@@ -27,12 +28,12 @@ func (router *WildcardRouter) Serve(port int) error {
 }
 
 // Creates a new router.
-func NewRouter(log logging.Logger, host string) (*common.Node, *WildcardRouter) {
+func NewRouter(log logging.Logger, spec *openapi.APISpec) (*common.Node, *WildcardRouter) {
 
 	root := common.Root()
 
+	root.Config.Spec = spec
 	root.Config.Log = log
-	root.Config.Host = host
 
 	f := func (res http.ResponseWriter, r *http.Request) {
 

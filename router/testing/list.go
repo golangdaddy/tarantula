@@ -10,23 +10,21 @@ func GetHandlers(url string) (list []*common.HandlerSpec) {
 
 	app := NewApp()
 
-	services := map[string][]*common.HandlerSpec{}
+	services := []*common.HandlerSpec{}
 	_, err := app.Get(url, &services)
 	if err != nil {
 		panic(err)
 	}
 
 	var i int
-	for serviceName, handlers := range services {
-		for _, handler := range handlers {
+	for serviceName, handler := range services {
 
-			fmt.Println(i, serviceName, handler.Method, handler.Endpoint)
+		fmt.Println(i, serviceName, handler.Method, handler.Endpoint)
 
-			list = append(list, handler)
+		list = append(list, handler)
 
-			i++
+		i++
 
-		}
 	}
 
 	return list

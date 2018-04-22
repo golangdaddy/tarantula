@@ -1,18 +1,19 @@
 package common
 
 import 	(
-		"sync"
-		"sort"
-		//
-		"github.com/golangdaddy/tarantula/log"
-		"github.com/golangdaddy/tarantula/web"
-		)
+	"sync"
+	"sort"
+	//
+	"github.com/golangdaddy/tarantula/log"
+	"github.com/golangdaddy/tarantula/web"
+	"github.com/golangdaddy/tarantula/router/common/openapi"
+)
 
 type Config struct {
+	Spec *openapi.APISpec
 	Log logging.Logger
-// ProjectName is for App Engine apps
+	// ProjectName is for App Engine apps
 	ProjectName string
-	Host string
 	RootRegistry Registry
 	SubdomainTrees map[string]*Node
 	headers Headers

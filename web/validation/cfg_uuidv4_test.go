@@ -6,7 +6,7 @@ import (
 	"github.com/golangdaddy/tarantula/web"
 )
 
-func TestString(t *testing.T) {
+func TestUUIDv4(t *testing.T) {
 
 	req := web.NewTestInterface("GET", "/")
 
@@ -14,15 +14,14 @@ func TestString(t *testing.T) {
 	success := &b
 
 	tests := map[string]*bool{
-		"": nil,
-		"a": success,
-		"hello world": nil,
-		"957!464&5": success,
-		"hello world iweufghoqiuweh oqiwhe fpiqhw fihqwe": nil,
-		"hello world iweufghoqiuweh oqiwhe fpiqhw fihqwehello world iweufghoqiuweh oqiwhe fpiqhw fihqwehello world iweufghoqiuweh oqiwhe fpiqhw fihqwehello world iweufghoqiuweh oqiwhe fpiqhw fihqwe": nil,
+		"98ceed88-756e-4823-96ef-2815eafc0c1e": success,
+		"98ceed88-756e-4823-96ef-2815eafc0c1j": nil,
+		"98ceed88-756e-4823-96ef-2815eafc0c1": nil,
+		"98ceed88-756e-4823-96ef2815eafc0c1e": nil,
+		"a": nil,
 	}
 
-	vc := String(1, 9)
+	vc := UUIDv4()
 
 	for test, result := range tests {
 

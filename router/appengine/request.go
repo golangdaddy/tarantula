@@ -14,6 +14,7 @@ import 	(
 		"github.com/golangdaddy/tarantula/log"
 		"github.com/golangdaddy/tarantula/log/ae"
 		"github.com/golangdaddy/tarantula/router/common"
+		"github.com/golangdaddy/go.uuid"
 		)
 
 type Request struct {
@@ -46,15 +47,27 @@ func NewRequestObject(node *common.Node, res http.ResponseWriter, r *http.Reques
 	}
 }
 
+func (req *Request) UID() (string, error) {
+
+	uid, err := uuid.NewV4()
+	if err != nil {
+		return "", err
+	}
+
+	return uid.String(), nil
+}
+
 func (req *Request) Log() logging.Logger {
+
+	ctx := appengine.NewContext(req.r)
 
 	req.Lock()
 	defer req.Unlock()
 
 	if req.logClient == nil {
 		client := logs.NewClient(
-			req.config.ProjectName,
-			appengine.NewContext(req.r),
+			appengine.AppID(ctx),
+			ctx,
 		)
 		req.logClient = client.NewLogger()
 		go func () {
@@ -83,7 +96,7 @@ func (req *Request) Res() http.ResponseWriter {
 	return req.res
 }
 
-func (req *Request) R() *http.Request {
+func (req *Request) R() interface{} {
 
 	return req.r
 }
@@ -122,8 +135,8 @@ func (req *Request) Method() string {
 }
 
 func (req *Request) Device() string {
-
-	return string(goDevice.GetType(req.R()))
+	r := req.R().(*http.Request)
+	return string(goDevice.GetType(r))
 }
 
 func (req *Request) Writer() io.Writer {
@@ -138,7 +151,7 @@ func (req *Request) Write(b []byte) {
 
 func (req *Request) ServeFile(path string) {
 
-	http.ServeFile(req.Res(), req.R(), path)
+	http.ServeFile(req.Res(), req.R().(*http.Request), path)
 }
 
 func (req *Request) Body(k string) interface{} {

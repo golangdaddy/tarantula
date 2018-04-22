@@ -10,6 +10,7 @@ import 	(
 		)
 
 type RequestInterface interface {
+	UID() (string, error)
 	FullPath() string
 	IsTLS() bool
 	Method() string
@@ -42,7 +43,7 @@ type RequestInterface interface {
 	Log() logging.Logger
 	//
 	Res() http.ResponseWriter
-	R() *http.Request
+	R() interface{}
 }
 
 type ResponseStatus struct {

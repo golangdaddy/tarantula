@@ -16,6 +16,6 @@ func NewApp() *App {
 	return &App{
 		[]*common.HandlerSpec{},
 		nil,
-		httpclient.NewClient(),
+		httpclient.NewClient(nil),
 	}
 }

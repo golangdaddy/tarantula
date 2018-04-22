@@ -28,6 +28,7 @@ type Handler struct {
 	fileCache []byte
 	responseSchema interface{}
 	payloadSchema []interface{}
+	patchSchema []interface{}
 	clientJS *bytes.Buffer
 	sync.RWMutex
 }
@@ -90,6 +91,19 @@ func (handler *Handler) Body(objects ...*Payload) *Handler {
 
 	for _, object := range objects {
 		handler.payloadSchema = append(
+			handler.payloadSchema,
+			object,
+		)
+	}
+
+	return handler
+}
+
+// Applies model which describes request payload
+func (handler *Handler) Patch(objects ...*Patch) *Handler {
+
+	for _, object := range objects {
+		handler.patchSchema = append(
 			handler.payloadSchema,
 			object,
 		)

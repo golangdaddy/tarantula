@@ -85,19 +85,13 @@ func (node *Node) Path() string {
 // Returns the node's full path string
 func (node *Node) FullPath() string {
 
-	parent := node
+	var path string
 
-	path := node.path
+	if node.parent != nil {
 
-	for {
-		parent = parent.parent
+		path = fmt.Sprintf("%s/%s", node.parent.FullPath(), node.path)
 
-		if parent == nil { break }
-
-		path = parent.path + "/" + path
 	}
-
-	if len(path) == 0 { path = "/" }
 
 	return path
 }

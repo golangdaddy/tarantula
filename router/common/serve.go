@@ -32,6 +32,15 @@ func (node *Node) MainHandler(req web.RequestInterface, fullPath string) (status
 
 	switch fullPath {
 
+		case "/swagger.json":
+
+			// render the OpenAPI handler documentation
+
+			spec := node.Config.BuildOpenAPISpec(req)
+
+			Respond(req, req.Respond(spec))
+			return
+
 		case "/_.json":
 
 			// render the handler documentation
@@ -127,7 +136,9 @@ func (node *Node) MainHandler(req web.RequestInterface, fullPath string) (status
 		req.Log().Panic("FAILED TO GET FUNCTION TO SERVE HANDLE OPERATION!")
 	}
 
-	status = handler.function(req)
-	Respond(req, status)
+	Respond(
+		req,
+		handler.function(req),
+	)
 	return
 }

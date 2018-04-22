@@ -1,4 +1,4 @@
-package girlfriend
+package router
 
 import 	(
 		"errors"

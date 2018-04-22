@@ -16,8 +16,6 @@ Allows dynamic/on-the-fly routing config updates.
 
 Automatically creates documentaion for all endpoints that have a handler.
 
-Automatically creates JS client libraries.
-
 Automatically handles all client errors in a dependable way.
 
 Allows custom validation & middleware functions.
@@ -53,6 +51,10 @@ type App struct {
 	logger logging.Logger
 }
 
+type Product struct {
+	name string
+}
+
 func main() {
 
 	app := &App{
@@ -65,6 +67,10 @@ func main() {
 
 	api.Add("/product").Param(validation.StringExact(30), "productID").GET(
 		app.api_product_get,
+	).Describe(
+		"Gets the specified product",
+	).Response(
+		Product{},
 	)
 
 	http.ListenAndServe(":80", router)
@@ -88,7 +94,7 @@ Constructing http path routes with GF is as simple as chaining these methods, or
 
 ```
 
-func gf_User_Put(req web.RequestInterface, arg interface{}) *web.ResponseStatus {
+func apiUserPut(req web.RequestInterface, arg interface{}) *web.ResponseStatus {
 
 	id := req.Param("id").(string)
 	firstName := req.BodyParam("firstName").(string)
@@ -105,7 +111,7 @@ func gf_User_Put(req web.RequestInterface, arg interface{}) *web.ResponseStatus 
 	return req.Respond(user)
 }
 
-func gf_User_Get(req web.RequestInterface, arg interface{}) *web.ResponseStatus {
+func apiUserGet(req web.RequestInterface, arg interface{}) *web.ResponseStatus {
 
 	id := req.Param("id").(string)
 
@@ -114,7 +120,7 @@ func gf_User_Get(req web.RequestInterface, arg interface{}) *web.ResponseStatus 
 	return req.Respond(user)
 }
 
-func gf_User_Patch(req web.RequestInterface, arg interface{}) *web.ResponseStatus {
+func apiUserPatch(req web.RequestInterface, arg interface{}) *web.ResponseStatus {
 
 	id := req.Param("id").(string)
 	field := req.BodyParam("field").(string)
@@ -138,7 +144,7 @@ func gf_User_Patch(req web.RequestInterface, arg interface{}) *web.ResponseStatu
 	return req.Respond(user)
 }
 
-func gf_User_Delete(req web.RequestInterface, arg interface{}) *web.ResponseStatus {
+func apiUserDelete(req web.RequestInterface, arg interface{}) *web.ResponseStatus {
 
 	id := req.Param("id").(string)
 
@@ -159,6 +165,8 @@ func main() {
 				app.apiUserGet,
 			).Describe(
 				"Gets the user.",
+			).Response(
+				User{},
 			)
 
 			user.PUT(
@@ -170,6 +178,8 @@ func main() {
 					"firstName": validation.String(2, 30),
 					"lastName":	validation.String(2, 30),
 				},
+			).Response(
+				User{},
 			)
 
 			user.DELETE(
@@ -187,6 +197,8 @@ func main() {
 					"field": validation.String(2, 12),
 					"value": validation.String(2, 30),
 				},
+			).Response(
+				User{},
 			)
 
 }

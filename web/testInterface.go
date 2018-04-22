@@ -3,8 +3,10 @@ package web
 import (
 	"io"
 	"os"
+	"net/url"
 	"net/http"
 	//
+	"github.com/golangdaddy/go.uuid"
 	"github.com/golangdaddy/tarantula/log"
 	"github.com/golangdaddy/tarantula/log/testing"
 )
@@ -30,6 +32,16 @@ type TestInterface struct {
 	bodyParams map[string]interface{}
 	headers map[string]string
 	log logging.Logger
+}
+
+func (ti *TestInterface) UID() (string, error) {
+
+	uid, err := uuid.NewV4()
+	if err != nil {
+		return "", err
+	}
+
+	return uid.String(), nil
 }
 
 func (ti *TestInterface) FullPath() string { return ti.path }
@@ -80,7 +92,13 @@ func (ti *TestInterface) Log() logging.Logger { return ti.log }
 
 func (ti *TestInterface) Res() http.ResponseWriter { return &rW{} }
 
-func (ti *TestInterface) R() *http.Request { return &http.Request{} }
+func (ti *TestInterface) R() interface{} {
+	return &http.Request{
+		URL: &url.URL{
+			Path: ti.path,
+		},
+	}
+}
 
 type rW struct {
 	status int

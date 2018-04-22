@@ -120,11 +120,12 @@ func (lg *Logger) Log(msg interface{}, severity logging.Severity) {
 		Severity:     severity,
 	})
 
+	if err != nil {
+		color.Yellow("WARNING!!! FAILED TO SEND LOG: " + err.Error())
+	}
+
 	// silent mode stops default logging to stdout
-	if !silent {
-		if err != nil {
-			color.Yellow("FAILED TO SEND LOG: " + err.Error())
-		}
+	if !lg.silent {
 		if severity == logging.Error {
 			color.Red(payload)
 			return

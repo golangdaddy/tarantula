@@ -23,6 +23,7 @@ type MiddlewareFunction func (*Middleware, web.RequestInterface, interface{}) *w
 
 type ModuleRegistry map[string]ModuleFunction
 
+type Patch map[string]*validation.Config
 type Payload map[string]*validation.Config
 
 func (payload Payload) WithFields(fields Payload) Payload {

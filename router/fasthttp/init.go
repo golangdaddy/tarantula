@@ -1,10 +1,11 @@
-// Package girlfriend implements the Girlfriend http router for fasthttp projects
-package girlfriend
+package router
 
 import	(
 		"strings"
 		"strconv"
+		//
 		"github.com/valyala/fasthttp"
+		"github.com/golangdaddy/tarantula/log/testing"
 		//
 		"github.com/golangdaddy/tarantula/router/common"
 		)
@@ -13,7 +14,7 @@ type FastHttpRouter func (ctx *fasthttp.RequestCtx)
 
 func (router FastHttpRouter) Serve(port int) error {
 
-  return fasthttp.ListenAndServe(":"+strconv.Itoa(port), fasthttp.RequestHandler(router))
+	return fasthttp.ListenAndServe(":"+strconv.Itoa(port), fasthttp.RequestHandler(router))
 }
 
 func (router FastHttpRouter) ServeTLS(port int, crt, key string) error {
@@ -26,29 +27,29 @@ func NewRouter(host string) (*common.Node, FastHttpRouter) {
 	root := common.Root()
 
 	root.Config.Host = host
+	root.Config.Log = logs.NewClient().NewLogger(host)
 
-	f := func (ctx *fasthttp.RequestCtx) {
+	return root, FastHttpRouter(
+		func (ctx *fasthttp.RequestCtx) {
 
-		fullPath := string(ctx.Path())
+			fullPath := string(ctx.Path())
 
-		node := common.Root()
+			node := common.Root()
+			req := NewRequestObject(node, ctx)
 
-		req := NewRequestObject(node, ctx)
+			// check for subdomain routing
 
-		// check for subdomain routing
+			subdomain := strings.Split(string(ctx.Host()), ".")[0]
 
-		subdomain := strings.Split(string(ctx.Host()), ".")[0]
+			subNode := node.Config.SubdomainTrees[subdomain]
+			if subNode != nil {
 
-		subNode := node.Config.SubdomainTrees[subdomain]
-		if subNode != nil {
+				subNode.MainHandler(req, fullPath)
+				return
+			}
 
-			subNode.MainHandler(req, fullPath)
-			return
-		}
+			node.MainHandler(req, fullPath)
 
-		node.MainHandler(req, fullPath)
-
-	}
-
-	return root, FastHttpRouter(f)
+		},
+	)
 }

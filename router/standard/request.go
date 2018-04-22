@@ -7,6 +7,7 @@ import 	(
 		"encoding/json"
 		"github.com/hjmodha/goDevice"
 		//
+		"github.com/golangdaddy/go.uuid"
 		"github.com/golangdaddy/tarantula/web"
 		"github.com/golangdaddy/tarantula/log"
 		"github.com/golangdaddy/tarantula/router/common"
@@ -40,6 +41,16 @@ func NewRequestObject(node *common.Node, res http.ResponseWriter, r *http.Reques
 	}
 }
 
+func (req *Request) UID() (string, error) {
+
+	uid, err := uuid.NewV4()
+	if err != nil {
+		return "", err
+	}
+
+	return uid.String(), nil
+}
+
 func (req *Request) Log() logging.Logger {
 
 	return req.config.Log
@@ -55,7 +66,7 @@ func (req *Request) Res() http.ResponseWriter {
 	return req.res
 }
 
-func (req *Request) R() *http.Request {
+func (req *Request) R() interface{} {
 
 	return req.r
 }
@@ -79,13 +90,7 @@ func (req *Request) BodyObject() map[string]interface{} {
 
 func (req *Request) FullPath() string {
 
-	if len(req.path) == 0 {
-
-		req.path = req.Node.FullPath()
-
-	}
-
-	return req.path
+	return req.Node.FullPath()
 }
 
 func (req *Request) Method() string {
@@ -95,7 +100,9 @@ func (req *Request) Method() string {
 
 func (req *Request) Device() string {
 
-	return string(goDevice.GetType(req.R()))
+	r := req.R().(*http.Request)
+
+	return string(goDevice.GetType(r))
 }
 
 func (req *Request) Writer() io.Writer {
@@ -110,7 +117,7 @@ func (req *Request) Write(b []byte) {
 
 func (req *Request) ServeFile(path string) {
 
-	http.ServeFile(req.Res(), req.R(), path)
+	http.ServeFile(req.Res(), req.R().(*http.Request), path)
 }
 
 func (req *Request) Body(k string) interface{} {

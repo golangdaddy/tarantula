@@ -6,6 +6,7 @@ import	(
 		"net/http"
 		//
 		"github.com/golangdaddy/tarantula/router/common"
+		"github.com/golangdaddy/tarantula/router/common/openapi"
 		)
 
 type WildcardRouter struct {
@@ -19,12 +20,11 @@ func (router *WildcardRouter) HandleFunc(pattern *regexp.Regexp, handler func(ht
 func (router *WildcardRouter) ServeHTTP(w http.ResponseWriter, r *http.Request) { router.handler.ServeHTTP(w, r) }
 
 // create a new router for an app
-func NewRouter(projectName, host string) (*common.Node, *WildcardRouter) {
+func NewRouter(spec *openapi.APISpec) (*common.Node, *WildcardRouter) {
 
 	root := common.Root()
 
-	root.Config.ProjectName = projectName
-	root.Config.Host = host
+	root.Config.Spec = spec
 
 	f := func (res http.ResponseWriter, r *http.Request) {
 

@@ -7,7 +7,7 @@ import (
     //
     "github.com/golangdaddy/tarantula/web"
     //
-    "github.com/blokhubio/models"
+    "github.com/blokhubio/common/models"
 )
 
 func TestRunQuery(t *testing.T) {
@@ -20,7 +20,7 @@ func TestRunQuery(t *testing.T) {
 
     dst := []*models.NamespaceAccount{}
 
-    _, err := client.RunQuery(req, q, nil, &dst)
+    _, err := client.RunQuery(req, q, &dst)
     if err != nil {
         t.Error(err)
         return

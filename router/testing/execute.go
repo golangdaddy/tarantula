@@ -20,10 +20,12 @@ func Execute(m *manifest.Manifest, endpoints ...*manifest.Endpoint) error {
 	app := &App{
 		GetHandlers(m.Spec),
 		m,
-		httpclient.NewClient(),
+		httpclient.NewClient(nil),
 	}
 
 	for _, e := range endpoints {
+
+		fmt.Println("CONNECTING TO ENDPOINT")
 
 		for x := 0; x < e.DelayBefore; x++ {
 			fmt.Println("DELAYING BEFORE...", x)
@@ -99,6 +101,7 @@ func (app *App) startExecution(endpoint *manifest.Endpoint) error {
 	}
 
 	if obj == nil {
+		fmt.Println("THIS ENDPOINT HAS NO CONFIGURED RESPONSE!")
 		return nil
 	}
 
@@ -113,11 +116,21 @@ func (app *App) startExecution(endpoint *manifest.Endpoint) error {
 			value, ok := object[used].(string)
 			if !ok {
 				fmt.Println(object)
-				panic("TYPE ASSERT FAILED")
+				if len(object) == 0 {
+					panic("RESPONSE OBJECT IS NIL, EXPECTING AT LEAST 1 KEY!")
+				}
+				if len(object) == 0 {
+					panic("RESPONSE OBJECT HAS NO KEYS, EXPECTING 1 AT LEAST!")
+				}
+				panic("TYPE ASSERT FAILED: "+used)
 			}
 			fmt.Println("USING VARIABLE " + used + " AS " + as)
 			app.Manifest.Variables[as] = value
 		}
+	}
+
+	if !endpoint.Evaluate(app.Manifest, obj) {
+		panic("FAILED TO EVALUATE RESPONSE AS CORRECT")
 	}
 
 	return nil
@@ -146,26 +159,24 @@ func (app *App) execute(spec *common.HandlerSpec) (interface{}, error) {
 
 	}
 
-	authHeader := map[string]string{
-		"Authorization": "Bearer "+app.Manifest.Token,
-	}
-
 	switch spec.Method {
 
 		case "GET":
 
-			_, err = app.Get(app.Manifest.Host + spec.MockEndpoint, dst, authHeader)
+			_, err = app.Get(app.Manifest.Host + spec.MockEndpoint, dst, app.Manifest.Headers)
 
 		case "POST":
 
 			b, _ := json.Marshal(spec.MockPayload)
-			color.Yellow(string(b))
+			color.Yellow(
+				fmt.Sprintf("%s%s POST %s", app.Manifest.Host, spec.MockEndpoint, string(b)),
+			)
 
-			_, err = app.Post(app.Manifest.Host + spec.MockEndpoint, spec.MockPayload, dst, authHeader)
+			_, err = app.Post(app.Manifest.Host + spec.MockEndpoint, spec.MockPayload, dst, app.Manifest.Headers)
 
 		case "DELETE":
 
-			_, err = app.Delete(app.Manifest.Host + spec.MockEndpoint, nil, authHeader)
+			_, err = app.Delete(app.Manifest.Host + spec.MockEndpoint, nil, app.Manifest.Headers)
 
 	}
 	if err != nil {

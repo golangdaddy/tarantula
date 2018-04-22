@@ -28,7 +28,7 @@ func NewSystem(subdomain, domain string, credentials graph.Credentials) (*System
 
 	version := "silk"
 
-	log := logs.NewClient(credentials.ProjectID()).NewLogger(version)
+	log := logs.NewClient(credentials.ProjectID()).NewLogger(false, version)
 
 	dbClient := mysql.NewClient(credentials.(*mysql.Credentials))
 

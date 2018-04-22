@@ -1,0 +1,85 @@
+package common
+
+import	(
+		"fmt"
+		"reflect"
+		//
+		"github.com/golangdaddy/tarantula/web"
+		"github.com/golangdaddy/tarantula/web/validation"
+		)
+
+func (handler *Handler) OpenAPISpec(req web.RequestInterface) *HandlerSpec {
+
+	// build useful payloadSchema for the spec
+
+	routeParams := map[string]*validation.Config{}
+	for _, validationConfig := range handler.Node.Validations {
+		routeParams[validationConfig.Keys[0]] = validationConfig
+	}
+
+	spec := &HandlerSpec{
+		Method:					handler.Method,
+		Endpoint:				handler.Node.FullPath(),
+		ResponseSchema:			handler.responseSchema,
+		IsFile:					handler.IsFile,
+		FilePath:				handler.filePath,
+		RouteParams:			routeParams,
+		Description:			handler.Description,
+	}
+
+	for _, schema := range handler.payloadSchema {
+
+		switch data := schema.(type) {
+
+			case nil:
+
+			case *Payload:
+
+				var payloadSchema map[string]*validation.Config
+				if schema, ok := spec.PayloadSchema.(map[string]*validation.Config); ok {
+					payloadSchema = schema
+				} else {
+					payloadSchema = map[string]*validation.Config{}
+				}
+				for k, cfg := range *data { payloadSchema[k] = cfg }
+				spec.PayloadSchema = payloadSchema
+
+			case *Optional:
+
+				var payloadSchema map[string]*validation.Config
+				if schema, ok := spec.PayloadSchema.(map[string]*validation.Config); ok {
+					payloadSchema = schema
+				} else {
+					payloadSchema = map[string]*validation.Config{}
+				}
+				for k, cfg := range *data {
+					payloadSchema[k] = cfg
+				}
+				spec.PayloadSchema = payloadSchema
+
+			case *Object:
+
+				spec.PayloadSchema = data
+
+			case *Array:
+
+				spec.PayloadSchema = data
+
+			default:
+
+				spec.PayloadSchema = fmt.Sprintf(
+					"unknown_type(%s)",
+					reflect.TypeOf(handler.payloadSchema).String(),
+				)
+
+		}
+
+	}
+
+	spec.NewMockPath()
+	if spec.Method != "GET" {
+		spec.NewMockPayload()
+	}
+
+	return spec
+}

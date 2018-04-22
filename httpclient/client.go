@@ -1,6 +1,8 @@
 package httpclient
 
 import (
+	"fmt"
+	"time"
 	"net/http"
 	"encoding/json"
 	//
@@ -11,16 +13,24 @@ import (
 )
 
 type Client struct {
-	httpClient *http.Client
+	*http.Client
 }
 
-func NewClient() *Client {
-	return &Client{
-		&http.Client{},
+func NewClient(c *http.Client) *Client {
+	if c == nil {
+		c = &http.Client{}
 	}
+	return &Client{c}
 }
 
-func NewUrlfetchClient(ctx context.Context) *Client {
+func NewUrlfetchClient(ctx context.Context, seconds ...int) *Client {
+
+	if len(seconds) > 0 {
+		ctx, _ = context.WithDeadline(
+			ctx,
+			time.Now().Add(time.Duration(1000000000 * seconds[0]) * time.Second),
+		)
+	}
 
 	return &Client{
 		urlfetch.Client(ctx),
@@ -49,7 +59,7 @@ func (client *Client) Get(url string, dst interface{}, headers ...map[string]str
 		}
 	}
 
-	b, err := client.New(httpRequest).Do()
+	b, err := client.New(httpRequest).DoReq()
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +79,7 @@ func (client *Client) Post(url string, src, dst interface{}, headers ...map[stri
 
 	httpRequest, err := sling.New().Post(url).BodyJSON(src).Request()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("HTTP POST FAILED: %s", err)
 	}
 
 	for _, header := range headers {
@@ -78,15 +88,15 @@ func (client *Client) Post(url string, src, dst interface{}, headers ...map[stri
 		}
 	}
 
-	b, err := client.New(httpRequest).Do()
+	b, err := client.New(httpRequest).DoReq()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("HTTP POST FAILED: %s", err)
 	}
 
 	if dst != nil {
 		err = json.Unmarshal(b, dst)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("HTTP POST FAILED - UNMARSHAL - %s: %s", err, string(b))
 		}
 		return nil, nil
 	}
@@ -107,7 +117,7 @@ func (client *Client) Delete(url string, src interface{}, headers ...map[string]
 		}
 	}
 
-	b, err := client.New(httpRequest).Do()
+	b, err := client.New(httpRequest).DoReq()
 	if err != nil {
 		return nil, err
 	}

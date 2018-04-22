@@ -55,8 +55,8 @@ func (client *Client) SetDB(db *graph.Database) {
 }
 
 func NewClient(credentials *Credentials) *Client {
-	
-	log := logs.NewClient(credentials.ProjectId).NewLogger(SERVICE_NAME)
+
+	log := logs.NewClient(credentials.ProjectId).NewLogger(false, SERVICE_NAME)
 
 	client, err := mySql.DialPassword(credentials.Connection, credentials.Username, credentials.Password)
 

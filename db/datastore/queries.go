@@ -9,7 +9,26 @@ import (
 	"github.com/golangdaddy/tarantula/web"
 )
 
-func (client *Client) RunQuery(req web.RequestInterface, q, s, dst interface{}) error {
+func (client *Client) RunKeysQuery(req web.RequestInterface, query *datastore.Query) ([]*datastore.Key, error) {
+
+	keys, err := client.GetAll(context.Background(), query, nil)
+	if err != nil {
+		return nil, err
+	}
+	return keys, nil
+}
+
+func (client *Client) RunKeysQueryAE(req web.RequestInterface, query *datastoreAE.Query) ([]*datastoreAE.Key, error) {
+
+	ctx := appengine.NewContext(req.R())
+	keys, err := query.GetAll(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+	return keys, nil
+}
+
+func (client *Client) RunQuery(req web.RequestInterface, q, dst interface{}) error {
 
 	_, ok := req.(*web.TestInterface)
 	if ok {

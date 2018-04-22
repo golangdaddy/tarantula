@@ -45,6 +45,31 @@ type Config struct {
 	Keys []string `json:"-"`
 	Min float64 `json:"min"`
 	Max float64 `json:"max"`
+	SummaryValue string `json:"summary"`
+	DefaultValue interface{} `json:"default"`
+	DescriptionValue string `json:"description"`
+}
+
+// Adds a default value to the config
+func (vc *Config) Default(x interface{}) *Config {
+	if reflect.TypeOf(x).String() == vc.Type {
+		vc.DefaultValue = x
+	} else {
+		panic("Wrong type '" + reflect.TypeOf(x).String() + "' for default value '" + vc.Type + "'")
+	}
+	return vc
+}
+
+// Adds a description to the config
+func (vc *Config) Description(x string) *Config {
+	vc.DescriptionValue = x
+	return vc
+}
+
+// Adds a description to the config
+func (vc *Config) Summary(x string) *Config {
+	vc.SummaryValue = x
+	return vc
 }
 
 func (vc *Config) Key() string {
@@ -127,36 +152,6 @@ func Url() *Config {
 			_, err := url.ParseRequestURI(s); if err != nil { return req.Respond(400, ERR_PARSE_URL), "" }
 
 			return nil, s
-		},
-	)
-}
-
-// Returns a validation object for request body that checks a property to see if it's an object
-func MapStringInterface() *Config {
-
-	return NewConfig(
-		map[string]interface{}{},
-		nil,
-		func (req web.RequestInterface, param interface{}) (*web.ResponseStatus, interface{}) {
-
-			x, ok := param.(map[string]interface{}); if !ok { return req.Respond(400, ERR_NOT_OBJECT), nil }
-
-			return nil, x
-		},
-	)
-}
-
-// Returns a validation object for request body that checks a property to see if it's an array
-func InterfaceArray() *Config {
-
-	return NewConfig(
-		[]interface{}{},
-		nil,
-		func (req web.RequestInterface, param interface{}) (*web.ResponseStatus, interface{}) {
-
-			m, ok := param.([]interface{}); if !ok { return req.Respond(400, ERR_NOT_ARRAY), nil }
-
-			return nil, m
 		},
 	)
 }

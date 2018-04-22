@@ -1,4 +1,4 @@
-package girlfriend
+package router
 
 import 	(
 		"io"
@@ -6,11 +6,12 @@ import 	(
 		"encoding/json"
 		//
 		"github.com/valyala/fasthttp"
-		"github.com/hjmodha/goDevice"
+		"github.com/golangdaddy/go.uuid"
+		//"github.com/hjmodha/goDevice"
 		//
+		"github.com/golangdaddy/tarantula/log"
 		"github.com/golangdaddy/tarantula/router/common"
 		"github.com/golangdaddy/tarantula/web"
-		"github.com/golangdaddy/tarantula/log"
 		)
 
 type Request struct {
@@ -39,6 +40,16 @@ func NewRequestObject(node *common.Node, ctx *fasthttp.RequestCtx) *Request {
 	}
 }
 
+func (req *Request) UID() (string, error) {
+
+	uid, err := uuid.NewV4()
+	if err != nil {
+		return "", err
+	}
+
+	return uid.String(), nil
+}
+
 func (req *Request) Log() logging.Logger {
 
 	return req.config.Log
@@ -56,9 +67,9 @@ func (req *Request) Res() http.ResponseWriter {
 	return *x
 }
 
-func (req *Request) R() *http.Request {
+func (req *Request) R() interface{} {
 
-	return &http.Request{}
+	return req.ctx
 }
 
 func (req *Request) IsTLS() bool {
@@ -94,7 +105,9 @@ func (req *Request) Method() string {
 
 func (req *Request) Device() string {
 
-	return string(goDevice.GetType(req.R()))
+	//r := req.R().(*fasthttp.RequestCtx)
+
+	return "?"
 }
 
 func (req *Request) Writer() io.Writer {

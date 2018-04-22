@@ -67,7 +67,9 @@ func (handler *Handler) Spec(req web.RequestInterface) *HandlerSpec {
 				} else {
 					payloadSchema = map[string]*validation.Config{}
 				}
-				for k, cfg := range *data { payloadSchema[k] = cfg }
+				for k, cfg := range *data {
+					payloadSchema[k] = cfg
+				}
 				spec.PayloadSchema = payloadSchema
 
 			case *Object:
@@ -99,13 +101,13 @@ func (handler *Handler) Spec(req web.RequestInterface) *HandlerSpec {
 
 func (spec *HandlerSpec) NewMockPath(patches ...map[string]interface{}) {
 
-    output := []string{}
+	output := []string{}
 
-    path := string(spec.Endpoint[1:])
+	path := string(spec.Endpoint[1:])
 
-    for _, part := range strings.Split(path, "/") {
+	for _, part := range strings.Split(path, "/") {
 
-        if string(part[0]) == ":" {
+		if string(part[0]) == ":" {
 
 			key := part[1:]
 
@@ -120,20 +122,20 @@ func (spec *HandlerSpec) NewMockPath(patches ...map[string]interface{}) {
 				}
 			}
 
-            output = append(
-                output,
-                value,
-            )
+			output = append(
+				output,
+				value,
+			)
 
-        } else {
-            output = append(
-                output,
-                part,
-            )
-        }
-    }
+		} else {
+			output = append(
+				output,
+				part,
+			)
+		}
+	}
 
-    spec.MockEndpoint = "/" + strings.Join(output, "/")
+	spec.MockEndpoint = "/" + strings.Join(output, "/")
 }
 
 

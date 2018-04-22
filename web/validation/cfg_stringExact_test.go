@@ -6,7 +6,7 @@ import (
 	"github.com/golangdaddy/tarantula/web"
 )
 
-func TestString(t *testing.T) {
+func TestStringExact(t *testing.T) {
 
 	req := web.NewTestInterface("GET", "/")
 
@@ -15,20 +15,19 @@ func TestString(t *testing.T) {
 
 	tests := map[string]*bool{
 		"": nil,
-		"a": success,
-		"hello world": nil,
-		"957!464&5": success,
-		"hello world iweufghoqiuweh oqiwhe fpiqhw fihqwe": nil,
-		"hello world iweufghoqiuweh oqiwhe fpiqhw fihqwehello world iweufghoqiuweh oqiwhe fpiqhw fihqwehello world iweufghoqiuweh oqiwhe fpiqhw fihqwehello world iweufghoqiuweh oqiwhe fpiqhw fihqwe": nil,
+		"1": nil,
+		"12": nil,
+		"123": success,
+		"1234": nil,
 	}
 
-	vc := String(1, 9)
+	vc := StringExact(3)
 
 	for test, result := range tests {
 
 		if status, _ := vc.PathFunction(req, test); (result == nil && status == nil) || (result != nil && status != nil) {
 
-			t.Error("FAILED:", test)
+			t.Error("FAILED")
 			return
 		}
 
@@ -38,9 +37,10 @@ func TestString(t *testing.T) {
 
 		if status, _ := vc.BodyFunction(req, test); (result == nil && status == nil) || (result != nil && status != nil) {
 
-			t.Error("FAILED:", test)
+			t.Error("FAILED")
 			return
 		}
 
 	}
+
 }

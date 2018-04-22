@@ -22,7 +22,7 @@ func Hex(min, max float64) *Config {
 				return req.Respond(400, ERR_INVALID_CHARS), nil
 			}
 
-			return nil, Sanitize(param)
+			return nil, param
 		},
 		func (req web.RequestInterface, param interface{}) (*web.ResponseStatus, interface{}) {
 
@@ -39,7 +39,7 @@ func Hex(min, max float64) *Config {
 				return req.Respond(400, ERR_INVALID_CHARS), nil
 			}
 
-			return nil, Sanitize(s)
+			return nil, s
 		},
 	)
 

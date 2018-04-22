@@ -6,7 +6,7 @@ import (
 	"github.com/golangdaddy/tarantula/web"
 )
 
-func TestString(t *testing.T) {
+func TestStringSet(t *testing.T) {
 
 	req := web.NewTestInterface("GET", "/")
 
@@ -15,14 +15,13 @@ func TestString(t *testing.T) {
 
 	tests := map[string]*bool{
 		"": nil,
-		"a": success,
+		"a": nil,
+		"hello": success,
+		"world": success,
 		"hello world": nil,
-		"957!464&5": success,
-		"hello world iweufghoqiuweh oqiwhe fpiqhw fihqwe": nil,
-		"hello world iweufghoqiuweh oqiwhe fpiqhw fihqwehello world iweufghoqiuweh oqiwhe fpiqhw fihqwehello world iweufghoqiuweh oqiwhe fpiqhw fihqwehello world iweufghoqiuweh oqiwhe fpiqhw fihqwe": nil,
 	}
 
-	vc := String(1, 9)
+	vc := StringSet("hello", "world")
 
 	for test, result := range tests {
 

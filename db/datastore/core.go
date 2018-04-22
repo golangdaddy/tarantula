@@ -1,6 +1,8 @@
 package ds
 
 import (
+	"reflect"
+	//
 	"golang.org/x/net/context"
 	datastore "cloud.google.com/go/datastore"
 	datastoreAE "google.golang.org/appengine/datastore"
@@ -90,6 +92,31 @@ func (client *Client) DeleteStruct(req web.RequestInterface, entityType, keyName
 	}
 
 	return client.DeleteKey(req, key)
+}
+
+func (client *Client) DeleteMulti(req web.RequestInterface, keys interface{}) error {
+
+	var err error
+
+	switch k := keys.(type) {
+
+		case []*datastoreAE.Key:
+
+			ctx := appengine.NewContext(req.R())
+			err = datastoreAE.DeleteMulti(ctx, k)
+
+		case []*datastore.Key:
+
+			// todo
+			//err = datastore.DeleteMulti(k)
+
+		default:
+
+			panic("INVALID KEY LIST TYPE: "+reflect.TypeOf(keys).String())
+
+	}
+
+	return err
 }
 
 func (client *Client) PutKey(req web.RequestInterface, key interface{}, src interface{}) error {
