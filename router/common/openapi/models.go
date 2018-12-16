@@ -2,7 +2,7 @@ package openapi
 
 type APISpec struct {
 	Swagger string `json:"swagger"`
-	Info Info `json:"info"`
+	Info *Info `json:"info"`
 	Host string `json:"host"`
 	BasePath string `json:"basePath"`
 	Schemes []string `json:"schemes"`

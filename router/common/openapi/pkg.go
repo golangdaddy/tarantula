@@ -3,7 +3,7 @@ package openapi
 func NewSpec(host, serviceName string) *APISpec {
 	return &APISpec{
 		Swagger: "2.0",
-		Info: Info{
+		Info: &Info{
 			Title: serviceName,
 		},
 		Host: host,
