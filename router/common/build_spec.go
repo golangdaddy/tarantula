@@ -67,7 +67,7 @@ func (config *Config) BuildOpenAPISpec(req web.RequestInterface) *openapi.APISpe
 		k := strings.Replace(
 			fmt.Sprintf("%s-%s", handler.Node.FullPath(), handler.Method),
 			"/",
-			"",
+			"_",
 			-1,
 		)
 		definition := &openapi.Definition{
