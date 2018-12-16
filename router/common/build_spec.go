@@ -68,7 +68,7 @@ func (config *Config) BuildOpenAPISpec(req web.RequestInterface) *openapi.APISpe
 			fmt.Sprintf("%s-%s", handler.Node.FullPath(), handler.Method),
 			"/",
 			"",
-			1,
+			-1,
 		)
 		definition := &openapi.Definition{
 			Type: "object",
