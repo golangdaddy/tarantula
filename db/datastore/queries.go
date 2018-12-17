@@ -1,6 +1,8 @@
 package ds
 
 import (
+	"net/http"
+	//
 	"golang.org/x/net/context"
 	"google.golang.org/appengine"
 	datastore "cloud.google.com/go/datastore"
@@ -20,7 +22,7 @@ func (client *Client) RunKeysQuery(req web.RequestInterface, query *datastore.Qu
 
 func (client *Client) RunKeysQueryAE(req web.RequestInterface, query *datastoreAE.Query) ([]*datastoreAE.Key, error) {
 
-	ctx := appengine.NewContext(req.R())
+	ctx := appengine.NewContext(req.R().(*http.Request))
 	keys, err := query.GetAll(ctx, nil)
 	if err != nil {
 		return nil, err
@@ -46,7 +48,7 @@ func (client *Client) RunQuery(req web.RequestInterface, q, dst interface{}) err
 
 		case *datastoreAE.Query:
 
-			ctx := appengine.NewContext(req.R())
+			ctx := appengine.NewContext(req.R().(*http.Request))
 			_, err := query.GetAll(ctx, dst)
 			if err != nil {
 				return err

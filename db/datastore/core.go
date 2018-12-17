@@ -2,6 +2,7 @@ package ds
 
 import (
 	"reflect"
+	"net/http"
 	//
 	"golang.org/x/net/context"
 	datastore "cloud.google.com/go/datastore"
@@ -20,7 +21,7 @@ func (client *Client) GetStruct(req web.RequestInterface, entityType, keyName st
 	var key interface{}
 
 	if client.appEngine {
-		ctx := appengine.NewContext(req.R())
+		ctx := appengine.NewContext(req.R().(*http.Request))
 
 		parent, _ := ancestor.(*datastoreAE.Key)
 		key = datastoreAE.NewKey(ctx, entityType, keyName, intId, parent)
@@ -39,7 +40,7 @@ func (client *Client) GetKey(req web.RequestInterface, key interface{}, dst inte
 	if client.appEngine {
 		notFound = datastoreAE.ErrNoSuchEntity.Error()
 		err = datastoreAE.Get(
-			appengine.NewContext(req.R()),
+			appengine.NewContext(req.R().(*http.Request)),
 			key.(*datastoreAE.Key),
 			dst,
 		)
@@ -67,7 +68,7 @@ func (client *Client) PutStruct(req web.RequestInterface, entityType, keyName st
 	var key interface{}
 
 	if client.appEngine {
-		ctx := appengine.NewContext(req.R())
+		ctx := appengine.NewContext(req.R().(*http.Request))
 		parent, _ := ancestor.(*datastoreAE.Key)
 		key = datastoreAE.NewKey(ctx, entityType, keyName, intId, parent)
 	} else {
@@ -83,7 +84,7 @@ func (client *Client) DeleteStruct(req web.RequestInterface, entityType, keyName
 	var key interface{}
 
 	if client.appEngine {
-		ctx := appengine.NewContext(req.R())
+		ctx := appengine.NewContext(req.R().(*http.Request))
 		parent, _ := ancestor.(*datastoreAE.Key)
 		key = datastoreAE.NewKey(ctx, entityType, keyName, intId, parent)
 	} else {
@@ -102,7 +103,7 @@ func (client *Client) DeleteMulti(req web.RequestInterface, keys interface{}) er
 
 		case []*datastoreAE.Key:
 
-			ctx := appengine.NewContext(req.R())
+			ctx := appengine.NewContext(req.R().(*http.Request))
 			err = datastoreAE.DeleteMulti(ctx, k)
 
 		case []*datastore.Key:
@@ -130,7 +131,7 @@ func (client *Client) PutKey(req web.RequestInterface, key interface{}, src inte
 
 	if client.appEngine {
 		_, err = datastoreAE.Put(
-			appengine.NewContext(req.R()),
+			appengine.NewContext(req.R().(*http.Request)),
 			key.(*datastoreAE.Key),
 			src,
 		)
@@ -151,7 +152,7 @@ func (client *Client) DeleteKey(req web.RequestInterface, key interface{}) error
 
 	if client.appEngine {
 		err = datastoreAE.Delete(
-			appengine.NewContext(req.R()),
+			appengine.NewContext(req.R().(*http.Request)),
 			key.(*datastoreAE.Key),
 		)
 	} else {
