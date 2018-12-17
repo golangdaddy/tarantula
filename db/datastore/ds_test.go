@@ -1,30 +1,30 @@
 package ds
 
 import (
-    "testing"
-    //
-    "cloud.google.com/go/datastore"
-    //
-    "github.com/golangdaddy/tarantula/web"
-    //
-    "github.com/blokhubio/common/models"
+	"testing"
+	//
+	"cloud.google.com/go/datastore"
+	//
+	"github.com/golangdaddy/tarantula/web"
+	//
+	"github.com/blokhubio/common/models"
 )
 
 func TestRunQuery(t *testing.T) {
 
-    client := &Client{}
+	client := &Client{}
 
-    req := web.NewTestInterface()
+	req := web.NewTestInterface()
 
-    q := datastore.NewQuery(models.CONST_DS_ENTITY_ACCOUNT_NAMESPACE)
+	q := datastore.NewQuery(models.CONST_DS_ENTITY_ACCOUNT_NAMESPACE)
 
-    dst := []*models.NamespaceAccount{}
+	dst := []*models.NamespaceAccount{}
 
-    _, err := client.RunQuery(req, q, &dst)
-    if err != nil {
-        t.Error(err)
-        return
-    }
+	_, err := client.RunQuery(req, q, &dst)
+	if err != nil {
+		t.Error(err)
+		return
+	}
 
-    req.Log().DebugJSON(dst)
+	req.Log().DebugJSON(dst)
 }

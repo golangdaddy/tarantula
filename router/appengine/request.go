@@ -2,7 +2,6 @@ package router
 
 import 	(
 		"io"
-		"time"
 		"sync"
 		"net/http"
 		"io/ioutil"
@@ -65,23 +64,7 @@ func (req *Request) Log() logging.Logger {
 	defer req.Unlock()
 
 	if req.logClient == nil {
-		client := logs.NewClient(
-			appengine.AppID(ctx),
-			ctx,
-		)
-		req.logClient = client.NewLogger()
-		go func () {
-
-			req.Lock()
-			defer req.Unlock()
-
-			req.logClient.Flush()
-
-			time.Sleep(time.Second / 20)
-			client.Close()
-			req.logClient = nil
-
-		}()
+		req.logClient = logs.NewClient(appengine.AppID(ctx), ctx).NewLogger()
 	}
 	return req.logClient
 }
