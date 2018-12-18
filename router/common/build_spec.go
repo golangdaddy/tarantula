@@ -111,6 +111,7 @@ func (config *Config) BuildOpenAPISpec(req web.RequestInterface) *openapi.APISpe
 					param.Maximum = pointerFloat64(cfg.Max)
 					param.Default = cfg.DefaultValue
 					param.Format = cfg.Type
+					param.Required = cfg.RequiredValue
 
 					switch param.Format {
 					case "bool":
