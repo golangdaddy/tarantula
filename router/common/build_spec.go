@@ -3,6 +3,7 @@ package common
 import (
 	"fmt"
 	"strings"
+	"net/url"
 	//
 	"github.com/golangdaddy/tarantula/web"
 	"github.com/golangdaddy/tarantula/web/validation"
@@ -64,12 +65,16 @@ func (config *Config) BuildOpenAPISpec(req web.RequestInterface) *openapi.APISpe
 			},
 		}
 
-		k := strings.Replace(
-			fmt.Sprintf("%s-%s", handler.Node.FullPath(), handler.Method),
-			"/",
-			"_",
-			-1,
+		// paths need to be RFC 3986 path encoded
+		k := url.PathEscape(
+			strings.Replace(
+				fmt.Sprintf("%s-%s", handler.Node.FullPath(), handler.Method),
+				"/",
+				"_",
+				-1,
+			),
 		)
+
 		definition := &openapi.Definition{
 			Type: "object",
 			Properties: map[string]openapi.Parameter{},
