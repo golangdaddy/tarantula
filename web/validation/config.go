@@ -45,6 +45,7 @@ type Config struct {
 	Keys []string `json:"-"`
 	Min float64 `json:"min"`
 	Max float64 `json:"max"`
+	RequiredValue bool `json:"required"`
 	SummaryValue string `json:"summary"`
 	DefaultValue interface{} `json:"default"`
 	DescriptionValue string `json:"description"`
@@ -72,8 +73,14 @@ func (vc *Config) Summary(x string) *Config {
 	return vc
 }
 
-func (vc *Config) Key() string {
+// Signifies that the field is 'required'
+func (vc *Config) Required() *Config {
+	vc.RequiredValue = true
+	return vc
+}
 
+// Returns the first key associated with the path parameter
+func (vc *Config) Key() string {
 	return vc.Keys[0]
 }
 
