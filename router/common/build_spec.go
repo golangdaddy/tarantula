@@ -91,7 +91,7 @@ func (config *Config) BuildOpenAPISpec(req web.RequestInterface) *openapi.APISpe
 				pathMethod.Parameters = append(
 					pathMethod.Parameters,
 					&openapi.Parameter{
-						Required: true,
+//						Required: true,
 						Name: "body",
 						In: "body",
 						Description: handler.Description,
@@ -117,7 +117,7 @@ func (config *Config) BuildOpenAPISpec(req web.RequestInterface) *openapi.APISpe
 					param.Maximum = pointerFloat64(cfg.Max)
 					param.Default = cfg.DefaultValue
 					param.Format = cfg.Type
-					param.Required = cfg.RequiredValue
+//					param.Required = cfg.RequiredValue
 
 					switch param.Format {
 					case "bool":
