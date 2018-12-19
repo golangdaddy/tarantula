@@ -159,6 +159,10 @@ func (config *Config) BuildOpenAPISpec(req web.RequestInterface) *openapi.APISpe
 		}
 
 		fullPath := handler.Node.FullPath()
+		j := strings.Split(fullPath, "/")
+		if len(j) >= 3 {
+			fullPath = "/" + strings.Join(j[2:], "/")
+		}
 		_, ok := spec.Paths[fullPath]
 		if !ok {
 			spec.Paths[fullPath] = &openapi.Path{}
