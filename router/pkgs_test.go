@@ -99,11 +99,11 @@ func TestMain(t *testing.T) {
 				t.Error(fmt.Errorf("SPEC HAS INVALID NUM OF PATHS! %v", len(spec.Paths)))
 			}
 
-			if spec.Paths["/resource/:id"] == nil {
+			if spec.Paths["/resource/{id}"] == nil {
 				t.Error(fmt.Errorf("SPEC HAS INVALID PATHS! %v", len(spec.Paths)))
 			}
 
-			if len(spec.Paths["/resource/:id"].GET.Parameters) != 1 {
+			if len(spec.Paths["/resource/{id}"].GET.Parameters) != 1 {
 				t.Error(fmt.Errorf("SPEC HAS INVALID NUMBER OF PARAMETERS! %v", len(spec.Paths)))
 			}
 

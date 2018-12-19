@@ -141,7 +141,7 @@ func (node *Node) Param(vc *validation.Config, keys ...string) *Node {
 
 	if p != nil { return p }
 
-	n := node.new(":" + keys[0])
+	n := node.new("{" + keys[0] + "}")
 
 	vc.Keys = keys
 
