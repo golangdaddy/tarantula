@@ -48,8 +48,19 @@ func (config *Config) BuildOpenAPISpec(req web.RequestInterface) *openapi.APISpe
 
 	for handler, handlerSpec := range handlers {
 
+		// paths need to be RFC 3986 path encoded
+		k := url.PathEscape(
+			strings.Replace(
+				fmt.Sprintf("%s-%s", handler.Node.FullPath(), handler.Method),
+				"/",
+				"_",
+				-1,
+			),
+		)
+
 		// create the object that holds the handler's definition
 		pathMethod := &openapi.PathMethod{
+			OperationID: k,
 			Produces: []string{
 				"application/json",
 			},
@@ -64,16 +75,6 @@ func (config *Config) BuildOpenAPISpec(req web.RequestInterface) *openapi.APISpe
 				},
 			},
 		}
-
-		// paths need to be RFC 3986 path encoded
-		k := url.PathEscape(
-			strings.Replace(
-				fmt.Sprintf("%s-%s", handler.Node.FullPath(), handler.Method),
-				"/",
-				"_",
-				-1,
-			),
-		)
 
 		definition := &openapi.Definition{
 			Type: "object",

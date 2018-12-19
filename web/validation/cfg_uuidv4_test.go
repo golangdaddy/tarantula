@@ -14,6 +14,7 @@ func TestUUIDv4(t *testing.T) {
 	success := &b
 
 	tests := map[string]*bool{
+		"62c2639c-7b60-4403-81f0-eb40a01ae1bb": success,
 		"98ceed88-756e-4823-96ef-2815eafc0c1e": success,
 		"98ceed88-756e-4823-96ef-2815eafc0c1j": nil,
 		"98ceed88-756e-4823-96ef-2815eafc0c1": nil,
