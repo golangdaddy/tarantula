@@ -3,13 +3,14 @@ package silk
 import (
 	"sync"
 	//
-	"github.com/golangdaddy/tarantula/graph"
-	"github.com/golangdaddy/tarantula/graph/mysql"
 	"github.com/golangdaddy/tarantula/log"
 	"github.com/golangdaddy/tarantula/log/gcp"
-	"github.com/golangdaddy/tarantula/router/common"
-	"github.com/golangdaddy/tarantula/router/standard"
+	"github.com/golangdaddy/tarantula/graph"
+	"github.com/golangdaddy/tarantula/graph/mysql"
 	"github.com/golangdaddy/tarantula/graph/query"
+	"github.com/golangdaddy/tarantula/router/standard"
+	"github.com/golangdaddy/tarantula/router/common"
+	"github.com/golangdaddy/tarantula/router/common/openapi"
 )
 
 type System struct {
@@ -34,7 +35,9 @@ func NewSystem(subdomain, domain string, credentials graph.Credentials) (*System
 
 	db := graph.NewDatabase(log, credentials.DatabaseName(), dbClient)
 
-	rootNode, router := router.NewRouter(log, subdomain)
+	spec := &openapi.APISpec{}
+
+	rootNode, router := router.NewRouter(log, spec)
 
 	system := &System{
 		logging.Logger(log),

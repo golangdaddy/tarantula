@@ -153,32 +153,6 @@ func (client *Client) PutKey(req web.RequestInterface, key interface{}, src inte
 	return err
 }
 
-func (client *Client) PutKeyMulti(req web.RequestInterface, key interface{}, src interface{}) error {
-
-	var err error
-
-	_, ok := req.(*web.TestInterface)
-	if ok {
-		return nil
-	}
-
-	if client.appEngine {
-		_, err = datastoreAE.Put(
-			appengine.NewContext(req.R().(*http.Request)),
-			key.([]*datastoreAE.Key),
-			src,
-		)
-	} else {
-		_, err = client.Put(
-			context.Background(),
-			key.([]*datastore.Key),
-			src,
-		)
-	}
-
-	return err
-}
-
 func (client *Client) DeleteKey(req web.RequestInterface, key interface{}) error {
 
 	var err error
