@@ -5,9 +5,10 @@ import	(
 		"strconv"
 		//
 		"github.com/valyala/fasthttp"
-		"github.com/golangdaddy/tarantula/log/testing"
+		"github.com/golangdaddy/tarantula/log"
 		//
 		"github.com/golangdaddy/tarantula/router/common"
+		"github.com/golangdaddy/tarantula/router/common/openapi"
 		)
 
 type FastHttpRouter func (ctx *fasthttp.RequestCtx)
@@ -22,12 +23,12 @@ func (router FastHttpRouter) ServeTLS(port int, crt, key string) error {
 	return fasthttp.ListenAndServeTLS(":"+strconv.Itoa(port), crt, key, fasthttp.RequestHandler(router))
 }
 
-func NewRouter(host string) (*common.Node, FastHttpRouter) {
+func NewRouter(logger logging.Logger, spec *openapi.APISpec) (*common.Node, FastHttpRouter) {
 
 	root := common.Root()
 
-	root.Config.Host = host
-	root.Config.Log = logs.NewClient().NewLogger(host)
+	root.Config.Spec = spec
+	root.Config.Log = logger
 
 	return root, FastHttpRouter(
 		func (ctx *fasthttp.RequestCtx) {

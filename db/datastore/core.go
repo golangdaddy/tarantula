@@ -79,6 +79,13 @@ func (client *Client) PutStruct(req web.RequestInterface, entityType, keyName st
 	return client.PutKey(req, key, src)
 }
 
+func (client *Client) PutMulti(req web.RequestInterface, entityType, keyName string, intId int64, ancestor, src interface{}) error {
+
+	var key interface{}
+
+	return client.PutKey(req, key, src)
+}
+
 func (client *Client) DeleteStruct(req web.RequestInterface, entityType, keyName string, intId int64, ancestor interface{}) error {
 
 	var key interface{}
@@ -139,6 +146,32 @@ func (client *Client) PutKey(req web.RequestInterface, key interface{}, src inte
 		_, err = client.Put(
 			context.Background(),
 			key.(*datastore.Key),
+			src,
+		)
+	}
+
+	return err
+}
+
+func (client *Client) PutKeyMulti(req web.RequestInterface, key interface{}, src interface{}) error {
+
+	var err error
+
+	_, ok := req.(*web.TestInterface)
+	if ok {
+		return nil
+	}
+
+	if client.appEngine {
+		_, err = datastoreAE.Put(
+			appengine.NewContext(req.R().(*http.Request)),
+			key.([]*datastoreAE.Key),
+			src,
+		)
+	} else {
+		_, err = client.Put(
+			context.Background(),
+			key.([]*datastore.Key),
 			src,
 		)
 	}
