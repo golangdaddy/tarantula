@@ -79,13 +79,6 @@ func (client *Client) PutStruct(req web.RequestInterface, entityType, keyName st
 	return client.PutKey(req, key, src)
 }
 
-func (client *Client) PutMulti(req web.RequestInterface, entityType, keyName string, intId int64, ancestor, src interface{}) error {
-
-	var key interface{}
-
-	return client.PutKey(req, key, src)
-}
-
 func (client *Client) DeleteStruct(req web.RequestInterface, entityType, keyName string, intId int64, ancestor interface{}) error {
 
 	var key interface{}
