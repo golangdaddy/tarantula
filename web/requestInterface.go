@@ -47,7 +47,7 @@ type RequestInterface interface {
 }
 
 type ResponseStatus struct {
-	Value interface{} `json:"value"`
+	Value interface{} `json:"value,omitempty"`
 	Code int `json:"code"`
 	Message interface{} `json:"message"`
 }

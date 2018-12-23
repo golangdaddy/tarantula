@@ -230,7 +230,6 @@ func (handler *Handler) ReadPayload(req web.RequestInterface) *web.ResponseStatu
 					readBodyObject = true
 				}
 
-
 			case *Payload:
 
 				if !readBodyObject {
@@ -247,8 +246,9 @@ func (handler *Handler) ReadPayload(req web.RequestInterface) *web.ResponseStatu
 						req.Body(key),
 					)
 					if status != nil {
-						status.Value = req.Body(key)
-						status.Message = fmt.Sprintf("%s KEY(%v)", status.MessageString(), key)
+						// dont leak data to logs
+						//status.Value = req.Body(key)
+						status.Message = fmt.Sprintf("%s KEY '%s'", status.MessageString(), key)
 						statusMessages[key] = status
 					} else {
 						bodyParams[key] = x
