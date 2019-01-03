@@ -46,6 +46,26 @@ func (config *Config) BuildOpenAPISpec(req web.RequestInterface) *openapi.APISpe
 	}
 	config.RUnlock()
 
+	swaggerPath := "/swagger.json"
+	_, ok := spec.Paths[swaggerPath]
+	if !ok {
+		spec.Paths[swaggerPath] = &openapi.Path{}
+	}
+	spec.Paths[swaggerPath].GET = &openapi.PathMethod{
+		Produces: []string{
+			"application/json",
+		},
+		Description: "Serves the OpenAPI spec JSON",
+		Responses: openapi.Responses{
+			Code200: &openapi.StatusCode{
+				Description: "Done OK",
+				Schema: openapi.StatusSchema{
+					Type: "object",
+				},
+			},
+		},
+	}
+
 	for handler, handlerSpec := range handlers {
 
 		// paths need to be RFC 3986 path encoded

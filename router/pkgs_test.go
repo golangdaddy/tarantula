@@ -83,6 +83,10 @@ func TestMain(t *testing.T) {
 		"Test the spec",
 		func (t *testing.T) {
 
+			if spec.Paths["/swagger.json"] == nil {
+				t.Error(fmt.Errorf("SPEC HAS INVALID PATHS! %v", len(spec.Paths)))
+			}
+
 			if spec.Host != CONST_SPEC_HOST {
 				t.Error(errors.New("SPEC HAS INVALID HOST!"))
 			}
@@ -95,7 +99,7 @@ func TestMain(t *testing.T) {
 				t.Error(errors.New("SPEC HAS INVALID CONTACT URL!"))
 			}
 
-			if len(spec.Paths) != 2 {
+			if len(spec.Paths) != 3 {
 				t.Error(fmt.Errorf("SPEC HAS INVALID NUM OF PATHS! %v", len(spec.Paths)))
 			}
 
