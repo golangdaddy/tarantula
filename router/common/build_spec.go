@@ -76,6 +76,11 @@ func (config *Config) BuildOpenAPISpec(req web.RequestInterface) *openapi.APISpe
 			},
 		}
 
+		// add the security spec from the node
+		if handler.Node.security != nil {
+			pathMethod.Security = handler.Node.security.Spec()
+		}
+
 		definition := &openapi.Definition{
 			Type: "object",
 			Properties: map[string]openapi.Parameter{},

@@ -12,6 +12,20 @@ type APISpec struct {
 	Definitions map[string]*Definition `json:"definitions"`
 }
 
+type SecuritySchemeObject struct {
+	Type string `json:"type"`
+	Description string `json:"description"`
+	Name string `json:"name"`
+	In string `json:"in"`
+	Scheme string `json:"scheme"`
+	BearerFormat string `json:"bearerFormat"`
+	// oauth
+	Flow string `json:"flow,omitempty"` // "implicit", "password", "application" or "accessCode"
+	AuthorizationUrl string `json:"authorizationUrl,omitempty"` // "implicit", "password", "application" or "accessCode"
+	TokenUrl string `json:"tokenUrl,omitempty"` // "implicit", "password", "application" or "accessCode"
+	Scopes map[string]string `json:"scopes,omitempty"`
+}
+
 type Info struct {
 	Version string `json:"version"`
 	Title string `json:"title"`
@@ -140,6 +154,7 @@ type PathMethod struct {
 	Parameters []*Parameter `json:"parameters,omitempty"`
 	Responses Responses `json:"responses,omitempty"`
 	Produces []string `json:"produces,omitempty"`
+	Security *SecuritySchemeObject `json:"security,omitempty"`
 }
 
 type Definition struct {

@@ -9,6 +9,7 @@ import	(
 		//
 		"github.com/golangdaddy/tarantula/web"
 		"github.com/golangdaddy/tarantula/web/validation"
+		"github.com/golangdaddy/tarantula/router/common/security"
 		)
 
 type Node struct {
@@ -22,6 +23,7 @@ type Node struct {
 	module *Module
 	modules []*Module
 	middleware []*Middleware
+	security security.Authentication
 	Validation *validation.Config
 	Validations []*validation.Config
 	sync.RWMutex
@@ -38,6 +40,7 @@ func (node *Node) new(path string) *Node {
 		modules: node.modules,
 		// inherited properties
 		path: path,
+		security: node.security,
 		Validations: node.Validations,
 	}
 
@@ -155,6 +158,17 @@ func (node *Node) Param(vc *validation.Config, keys ...string) *Node {
 	node.Unlock()
 
 	return n
+}
+
+// Adds a new param-node
+func (node *Node) AuthBearer() *Node {
+
+	node.security = &security.Auth_HTTP{
+		Scheme: "bearer",
+		BearerFormat: "JWT",
+	}
+
+	return node
 }
 
 func (node *Node) newModule(function ModuleFunction, arg interface{}) *Module {
