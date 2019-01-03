@@ -66,6 +66,8 @@ func (config *Config) BuildOpenAPISpec(req web.RequestInterface) *openapi.APISpe
 		},
 	}
 
+	spec.SecurityDefinitions = map[string]*openapi.SecuritySchemeObject{}
+
 	for handler, handlerSpec := range handlers {
 
 		// paths need to be RFC 3986 path encoded
@@ -98,10 +100,12 @@ func (config *Config) BuildOpenAPISpec(req web.RequestInterface) *openapi.APISpe
 
 		// add the security spec from the node
 		if handler.Node.security != nil {
+			secSpec := handler.Node.security.Spec()
 			pathMethod.Security = append(
 				pathMethod.Security,
-				handler.Node.security.Spec(),
+				secSpec,
 			)
+			spec.SecurityDefinitions[secSpec.Type] = secSpec
 		}
 
 		definition := &openapi.Definition{
