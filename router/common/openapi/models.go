@@ -10,12 +10,13 @@ type APISpec struct {
 	Produces []string `json:"produces"`
 	Paths map[string]*Path `json:"paths"`
 	Definitions map[string]*Definition `json:"definitions"`
-	SecurityDefinitions map[string]*SecurityDefinition `json:"securityDefinitions"`
+	SecuritySchemes map[string]*SecurityDefinition `json:"securityDefinitions"`
 }
 
 type SecurityDefinition struct {
 	Type string `json:"type"`
-	Flow string `json:"flow"`
+	Flow string `json:"flow,omitempty"`
+	TokenUrl string `json:"tokenUrl,omitempty"`
 }
 
 type SecuritySchemeObject struct {
@@ -30,6 +31,25 @@ type SecuritySchemeObject struct {
 	AuthorizationUrl string `json:"authorizationUrl,omitempty"` // "implicit", "password", "application" or "accessCode"
 	TokenUrl string `json:"tokenUrl,omitempty"` // "implicit", "password", "application" or "accessCode"
 	Scopes map[string]string `json:"scopes,omitempty"`
+}
+
+type Path struct {
+	GET *PathMethod `json:"get,omitempty"`
+	PUT *PathMethod `json:"put,omitempty"`
+	POST *PathMethod `json:"post,omitempty"`
+	PATCH *PathMethod `json:"patch,omitempty"`
+	DELETE *PathMethod `json:"delete,omitempty"`
+	HEAD *PathMethod `json:"head,omitempty"`
+	OPTIONS *PathMethod `json:"options,omitempty"`
+}
+
+type PathMethod struct {
+	Description string `json:"description,omitempty"`
+	OperationID string `json:"operationId,omitempty"`
+	Parameters []*Parameter `json:"parameters,omitempty"`
+	Responses Responses `json:"responses,omitempty"`
+	Produces []string `json:"produces,omitempty"`
+	Security []*SecuritySchemeObject `json:"security,omitempty"`
 }
 
 type Info struct {
@@ -142,25 +162,6 @@ type Items struct {
 	MaxItems *int64 `json:"maxItems,omitempty"`
 	UniqueItems bool `json:"uniqueItems,omitempty"`
 	Items *Items `json:"items,omitempty"`
-}
-
-type Path struct {
-	GET *PathMethod `json:"get,omitempty"`
-	PUT *PathMethod `json:"put,omitempty"`
-	POST *PathMethod `json:"post,omitempty"`
-	PATCH *PathMethod `json:"patch,omitempty"`
-	DELETE *PathMethod `json:"delete,omitempty"`
-	HEAD *PathMethod `json:"head,omitempty"`
-	OPTIONS *PathMethod `json:"options,omitempty"`
-}
-
-type PathMethod struct {
-	Description string `json:"description,omitempty"`
-	OperationID string `json:"operationId,omitempty"`
-	Parameters []*Parameter `json:"parameters,omitempty"`
-	Responses Responses `json:"responses,omitempty"`
-	Produces []string `json:"produces,omitempty"`
-	Security []*SecuritySchemeObject `json:"security,omitempty"`
 }
 
 type Definition struct {

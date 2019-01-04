@@ -66,7 +66,7 @@ func (config *Config) BuildOpenAPISpec(req web.RequestInterface) *openapi.APISpe
 		},
 	}
 
-	spec.SecurityDefinitions = map[string]*openapi.SecurityDefinition{}
+	spec.SecuritySchemes = map[string]*openapi.SecurityDefinition{}
 
 	for handler, handlerSpec := range handlers {
 
@@ -105,7 +105,7 @@ func (config *Config) BuildOpenAPISpec(req web.RequestInterface) *openapi.APISpe
 				pathMethod.Security,
 				secSpec,
 			)
-			spec.SecurityDefinitions[secSpec.Type[0]] = &openapi.SecurityDefinition{
+			spec.SecuritySchemes[secSpec.Type[0]] = &openapi.SecurityDefinition{
 				Type: "basic",
 			}
 		}
