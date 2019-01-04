@@ -66,8 +66,6 @@ func (config *Config) BuildOpenAPISpec(req web.RequestInterface) *openapi.APISpe
 		},
 	}
 
-	spec.SecuritySchemes = map[string]*openapi.SecurityDefinition{}
-
 	for handler, handlerSpec := range handlers {
 
 		// paths need to be RFC 3986 path encoded
@@ -105,7 +103,7 @@ func (config *Config) BuildOpenAPISpec(req web.RequestInterface) *openapi.APISpe
 				pathMethod.Security,
 				secSpec,
 			)
-			spec.SecuritySchemes[secSpec.Type[0]] = &openapi.SecurityDefinition{
+			spec.Components.SecuritySchemes[secSpec.Type[0]] = &openapi.SecurityDefinition{
 				Type: "basic",
 			}
 		}

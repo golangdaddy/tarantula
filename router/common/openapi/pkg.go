@@ -12,5 +12,8 @@ func NewSpec(host, serviceName string) *APISpec {
 		Consumes: []string{"application/json"},
 		Produces: []string{"application/json"},
 		Definitions: map[string]*Definition{},
+		Components: &Components{
+			SecuritySchemes: map[string]*SecurityDefinition{},
+		},
 	}
 }

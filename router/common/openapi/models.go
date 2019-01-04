@@ -10,7 +10,11 @@ type APISpec struct {
 	Produces []string `json:"produces"`
 	Paths map[string]*Path `json:"paths"`
 	Definitions map[string]*Definition `json:"definitions"`
-	SecuritySchemes map[string]*SecurityDefinition `json:"securityDefinitions"`
+	Components *Components `json:"components,omitempty"`
+}
+
+type Components struct {
+	SecuritySchemes map[string]*SecurityDefinition `json:"securitySchemes"`
 }
 
 type SecurityDefinition struct {
