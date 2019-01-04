@@ -106,7 +106,7 @@ func (config *Config) BuildOpenAPISpec(req web.RequestInterface) *openapi.APISpe
 				secSpec,
 			)
 			spec.SecurityDefinitions[secSpec.Type[0]] = &openapi.SecurityDefinition{
-				Type: secSpec.Type[0],
+				Type: "basic",
 			}
 		}
 

@@ -15,6 +15,7 @@ type APISpec struct {
 
 type SecurityDefinition struct {
 	Type string `json:"type"`
+	Flow string `json:"flow"`
 }
 
 type SecuritySchemeObject struct {
