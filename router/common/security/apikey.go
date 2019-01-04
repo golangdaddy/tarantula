@@ -15,7 +15,7 @@ func (self *Auth_Key) Validate(b []byte) error {
 
 func (self *Auth_Key) Spec() *openapi.SecuritySchemeObject {
 	return &openapi.SecuritySchemeObject{
-		Type: "apiKey",
+		Type: []string{"apiKey"},
 		In: self.In,
 		Name: self.Name,
 	}

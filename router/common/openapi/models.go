@@ -14,12 +14,12 @@ type APISpec struct {
 }
 
 type SecuritySchemeObject struct {
-	Type string `json:"type"`
+	Type []string `json:"type"`
 	Description string `json:"description,omitempty"`
 	Name string `json:"name,omitempty"`
 	In string `json:"in,omitempty"`
-	Scheme string `json:"scheme,omitempty"`
-	BearerFormat string `json:"bearerFormat,omitempty"`
+	Scheme []string `json:"scheme,omitempty"`
+	BearerFormat []string `json:"bearerFormat,omitempty"`
 	// oauth
 	Flow string `json:"flow,omitempty"` // "implicit", "password", "application" or "accessCode"
 	AuthorizationUrl string `json:"authorizationUrl,omitempty"` // "implicit", "password", "application" or "accessCode"

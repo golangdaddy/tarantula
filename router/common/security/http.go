@@ -15,8 +15,8 @@ func (self *Auth_HTTP) Validate(b []byte) error {
 
 func (self *Auth_HTTP) Spec() *openapi.SecuritySchemeObject {
 	return &openapi.SecuritySchemeObject{
-		Type: "http",
-		Scheme: self.Scheme,
-		BearerFormat: self.BearerFormat,
+		Type: []string{"http"},
+		Scheme: []string{self.Scheme},
+		BearerFormat: []string{self.BearerFormat},
 	}
 }

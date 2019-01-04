@@ -17,7 +17,7 @@ func (self *Auth_OAuth2) Validate(b []byte) error {
 
 func (self *Auth_OAuth2) Spec() *openapi.SecuritySchemeObject {
 	return &openapi.SecuritySchemeObject{
-		Type: "oauth2",
+		Type: []string{"oauth2"},
 		Flow: self.Flow,
 		AuthorizationUrl: self.AuthorizationUrl,
 		TokenUrl: self.TokenUrl,
